@@ -1,0 +1,6 @@
+@NoSqlDatabase_HostAddress = http://localhost:5023
+
+GET {{NoSqlDatabase_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
