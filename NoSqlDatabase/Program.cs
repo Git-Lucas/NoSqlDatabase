@@ -1,4 +1,5 @@
 using NoSqlDatabase.Data;
+using NoSqlDatabase.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<DatabaseContextMongoDb>();
+builder.Services.AddScoped<CreateOneRandonlyUseCase>();
 
 var app = builder.Build();
 
