@@ -8,7 +8,7 @@ public class DatabaseContextMongoDb(IConfiguration configuration)
     private readonly MongoClient _client = new(configuration.GetConnectionString("DefaultConnection"));
     private Dictionary<string, List<string>>? _databasesAndCollections;
 
-    public async Task<Dictionary<string, List<string>>> GetDatabaseAndCollections()
+    public async Task<Dictionary<string, List<string>>> GetDatabasesAndCollectionsAsync()
     {
         if (_databasesAndCollections is not null)
         {
@@ -34,7 +34,7 @@ public class DatabaseContextMongoDb(IConfiguration configuration)
         return _databasesAndCollections;
     }
 
-    public async Task<BsonDocument> GetDocument(string databaseName, string collectionName, int index)
+    public async Task<BsonDocument> GetDocumentAsync(string databaseName, string collectionName, int index = 0)
     {
         IMongoCollection<BsonDocument> collection = GetCollection(databaseName, collectionName);
 
@@ -49,13 +49,13 @@ public class DatabaseContextMongoDb(IConfiguration configuration)
         return document;
     }
 
-    public async Task<long> GetCollectionCount(string databaseName, string collectionName)
+    public async Task<long> GetCollectionCountAsync(string databaseName, string collectionName)
     {
         IMongoCollection<BsonDocument> collection = GetCollection(databaseName, collectionName);
         return await collection.EstimatedDocumentCountAsync();
     }
 
-    public async Task<UpdateResult> CreateOrUpdateField(string databaseName, string collectionName, string id, string fieldName, string value)
+    public async Task<UpdateResult> CreateOrUpdateFieldAsync(string databaseName, string collectionName, string id, string fieldName, string value)
     {
         IMongoCollection<BsonDocument> collection = GetCollection(databaseName, collectionName);
         UpdateDefinition<BsonDocument> update = Builders<BsonDocument>.Update.Set(fieldName, new BsonString(value));
@@ -63,14 +63,14 @@ public class DatabaseContextMongoDb(IConfiguration configuration)
         return await collection.UpdateOneAsync(CreateIdFilter(id), update);
     }
 
-    public async Task<DeleteResult> DeleteDocument(string databaseName, string collectionName, string id)
+    public async Task<DeleteResult> DeleteDocumentAsync(string databaseName, string collectionName, string id)
     {
         IMongoCollection<BsonDocument> collection = GetCollection(databaseName, collectionName);
 
         return await collection.DeleteOneAsync(CreateIdFilter(id));
     }
 
-    public async Task CreateDocument(string databaseName, string collectionName)
+    public async Task CreateDocumentAsync(string databaseName, string collectionName)
     {
         IMongoCollection<BsonDocument> collection = GetCollection(databaseName, collectionName);
 
