@@ -1,4 +1,3 @@
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace NoSqlDatabase.Models;
@@ -6,7 +5,6 @@ namespace NoSqlDatabase.Models;
 public class WeatherForecast(DateOnly date, int temperatureC, string summary) : IEntity
 {
     [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
     public Guid Id => Guid.NewGuid();
     public DateOnly Date { get; private set; } = date;
     public int TemperatureC { get; private set; } = temperatureC;
