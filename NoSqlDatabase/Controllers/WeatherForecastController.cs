@@ -1,33 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
-using NoSqlDatabase.Data;
+using NoSqlDatabase.DTOs;
 using NoSqlDatabase.Models;
-using NoSqlDatabase.UseCases;
+using NoSqlDatabase.UseCases.WeatherForecasts;
 
 namespace NoSqlDatabase.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController(CreateOneRandonlyUseCase createOneRandonlyUseCase) : ControllerBase
+public class WeatherForecastController : ControllerBase
 {
-    private readonly CreateOneRandonlyUseCase _createOneRandonlyUseCase = createOneRandonlyUseCase;
-
     [HttpPost("OneRandonly")]
     [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
-    public IActionResult CreateOneRandonly()
+    public async Task<IActionResult> CreateOneRandonlyAsync([FromServices] CreateOneRandonly useCase)
     {
-        Guid createdId = _createOneRandonlyUseCase.Execute();
+        Guid createdId = await useCase.ExecuteAsync();
 
         return Created(string.Empty, createdId);
     }
 
-    [HttpGet("CountDatabase")]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CountDatabase([FromServices] DatabaseContextMongoDb context)
+    [HttpGet]
+    [ProducesResponseType(typeof(GetPagedResponse<WeatherForecast>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllAsync([FromServices] GetAll useCase, [FromQuery] int skip, [FromQuery] int take)
     {
-        IMongoCollection<WeatherForecast> weatherForecastsDatabase = context
-            .GetCollection<WeatherForecast>(DatabaseUtils.GetNameCollection(typeof(WeatherForecast)));
+        GetPagedResponse<WeatherForecast> weatherForecastsFromDatabase = await useCase.ExecuteAsync(skip, take);
 
-        return Ok(await weatherForecastsDatabase.EstimatedDocumentCountAsync());
+        return Ok(weatherForecastsFromDatabase);
     }
 }

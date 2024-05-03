@@ -14,7 +14,7 @@ public class DatabaseContextMongoDb
         _database = _client.GetDatabase(configuration["MongoDB:DatabaseName"]);
     }
 
-    public IMongoCollection<T> GetCollection<T>(string collectionName) where T : IEntity
+    public IMongoCollection<T> GetCollection<T>(string collectionName) where T : BaseEntity
     {
         return _database.GetCollection<T>(collectionName);
     }
