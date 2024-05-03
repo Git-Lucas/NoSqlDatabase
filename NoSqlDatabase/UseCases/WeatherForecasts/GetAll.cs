@@ -7,8 +7,7 @@ namespace NoSqlDatabase.UseCases.WeatherForecasts;
 
 public class GetAll(DatabaseContextMongoDb context)
 {
-    private readonly IMongoCollection<WeatherForecast> _weatherForecastsDatabase = context
-        .GetCollection<WeatherForecast>(DatabaseUtils.GetNameCollection(typeof(WeatherForecast)));
+    private readonly IMongoCollection<WeatherForecast> _weatherForecastsDatabase = context.GetCollection<WeatherForecast>();
 
     public async Task<GetPagedResponse<WeatherForecast>> ExecuteAsync(int skip, int take)
     {

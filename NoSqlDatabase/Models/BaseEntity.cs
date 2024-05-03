@@ -5,5 +5,5 @@ namespace NoSqlDatabase.Models;
 public abstract class BaseEntity
 {
     [BsonId]
-    public Guid Id => Guid.NewGuid();
+    public Guid Id { get; protected set; }
 }

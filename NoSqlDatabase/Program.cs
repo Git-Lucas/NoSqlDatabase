@@ -7,9 +7,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<DatabaseContextMongoDb>();
-builder.Services.AddScoped<CreateOneRandonly>();
-builder.Services.AddScoped<GetAll>();
+builder.Services
+    .AddSingleton<DatabaseContextMongoDb>()
+    .AddScoped<CreateOneRandonly>()
+    .AddScoped<GetAll>()
+    .AddScoped<GetById>();
 
 var app = builder.Build();
 

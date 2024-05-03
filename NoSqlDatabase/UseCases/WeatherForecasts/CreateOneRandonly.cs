@@ -7,8 +7,7 @@ namespace NoSqlDatabase.UseCases.WeatherForecasts;
 public class CreateOneRandonly(DatabaseContextMongoDb context)
 {
     private static readonly string[] _summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-    private readonly IMongoCollection<WeatherForecast> _weatherForecastsDatabase = context
-        .GetCollection<WeatherForecast>(DatabaseUtils.GetNameCollection(type: typeof(WeatherForecast)));
+    private readonly IMongoCollection<WeatherForecast> _weatherForecastsDatabase = context.GetCollection<WeatherForecast>();
 
     public async Task<Guid> ExecuteAsync()
     {
