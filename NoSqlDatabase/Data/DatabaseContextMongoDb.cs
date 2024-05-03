@@ -12,11 +12,12 @@ public class DatabaseContextMongoDb
     {
         _client = new(configuration["MongoDB:ConnectionString"]);
         _database = _client.GetDatabase(configuration["MongoDB:DatabaseName"]);
-
     }
 
-    public IMongoCollection<T> Teste<T>(string collectionName) where T : IEntity
+    public IMongoCollection<T> GetCollection<T>() where T : BaseEntity
     {
+        string collectionName = DatabaseUtils.GetNameCollection(typeof(T));
+
         return _database.GetCollection<T>(collectionName);
     }
 }
